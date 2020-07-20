@@ -1,5 +1,5 @@
 <template>
-    <div id="recipePreview">
+    <div id="myRecipePreview">
       <div class="container-outer">
         <div class="container-row">
           <div class="container-cell" style="border-right: 2px dashed grey; width:80%;">
@@ -12,7 +12,6 @@
                 <b><u>Vegan:</u></b><br><br>
                 <b><u>Vegetarian:</u></b><br><br>
                 <b><u>Gluten Free:</u></b><br><br>
-                <b><u>Seen Before:</u></b><br><br>
               
                <div class="container-cell" style="padding:0px 30px;">
                   {{ prepareTime }} Minutes<br><br>
@@ -30,20 +29,11 @@
                 <span v-if="glutenFree == 'V'" class="t">V</span>
                 <span v-if="glutenFree == 'X'" class="f">X</span>
                 <br><br>
-
-                <span v-if="isWatchedBefore == 'V'" class="t">V</span>
-                <span v-if="isWatchedBefore == 'X'" class="f">X</span>
-
-
-                <br><br>
               </div>
             </div>
           </div>
           <div class="container-cell" style="width:20%;">
             <img :src="image" class="imageClass" v-on:click="showFullRecipe">
-
-            <RecipeFavorites :isFavorite="this.isFavorite" :recipeID="this.recipeID"/>
-
           </div>
             
         </div>
@@ -54,16 +44,9 @@
 </template>
 
 <script>
-import axios from 'axios';
-import RecipeFavorites from "./RecipeFavorites.vue";
 
 export default {
-    name: "RecipePreview",
-
-    components:
-    {
-      RecipeFavorites
-    },
+    name: "MyRecipePreview",
 
     data() {
         return {
@@ -105,16 +88,6 @@ export default {
       required: false,
       default: ''
         },
-        isWatchedBefore: {
-      type: String,
-      required: false,
-      default: ''
-        },
-        isFavorite: {
-      type: String,
-      required: false,
-      default: ''
-        },
         ingredients: {
       type: String,
       required: false,
@@ -124,6 +97,16 @@ export default {
       type: String,
       required: false,
       default: ''
+        },
+        isWatchedBefore: {
+      type: String,
+      required: false,
+      default: 'V'
+        },
+        isFavorite: {
+      type: String,
+      required: false,
+      default: 'V'
         },
         recipeID: {
       type: String,
@@ -135,16 +118,13 @@ export default {
       required: false,
       default: ''
         },
-
     },
 
-    mounted()
+    methods:
     {
-
-},
-  methods:{
       showFullRecipe: function()
       {
+
           if (this.ingredients.constructor === Array)
           {
             this.ingredients = this.ingredients.join(", ");
@@ -158,38 +138,22 @@ export default {
             isVegan: this.isVegan,
             isVegetarian: this.isVegetarian,
             glutenFree: this.glutenFree,
-            isWatchedBefore: this.isWatchedBefore,
-            isFavorite: this.isFavorite,
+            isWatchedBefore: "V",
+            isFavorite: "V",
             ingredients: this.ingredients,
             instructions: this.instructions,
             recipeID: this.recipeID,
             servings: this.servings
           };
 
-          if (window.$cookies.isKey("userid"))
-          {
-            let uid = window.$cookies.get("userid");
 
-            const res = axios.post('http://localhost:3000/user/addViewedRecipe', {recipeID: this.recipeID, user_id: uid}).then(response => {
-
-            }).
-            catch(error => {
-              alert(error);
-            })
-          }
-
-
-
-          
           this.$root.$router.push({name: "FullRecipe", params: {recipe: rec}});
 
       },
 
-
-
-
-}
+             
     
+    }
     
 }
 

@@ -1,10 +1,13 @@
 <template>
-    <div id="recipePreview">
-      <div class="container-outer">
+    <div id="HomeRecipePreview">
         <div class="container-row">
-          <div class="container-cell" style="border-right: 2px dashed grey; width:80%;">
+          <div class="container-cell">
+      <div class="container-outer" style="width:100%;">
             <p class="recipeTitle" v-on:click="showFullRecipe"> {{ title }}</p><br><br>
-            <div class="container-row">
+
+        <div class="container-row">
+          <div class="container-cell" style="border-right: 2px dashed grey; width:15%;overflow:hidden;white-space:nowrap;">
+            <div class="container-row" style="overflow:hidden;white-space:nowrap;">
             
                 <b><u>Time:</u></b><br><br>
                 <b><u>Likes:</u></b><br><br>
@@ -14,8 +17,8 @@
                 <b><u>Gluten Free:</u></b><br><br>
                 <b><u>Seen Before:</u></b><br><br>
               
-               <div class="container-cell" style="padding:0px 30px;">
-                  {{ prepareTime }} Minutes<br><br>
+               <div class="container-cell" style="padding:0px 50px; width:60%">
+                {{ prepareTime }} Minutes<br><br>
                 {{ likes }}<br><br>
                 {{ servings }}
                 <br><br>
@@ -35,7 +38,7 @@
                 <span v-if="isWatchedBefore == 'X'" class="f">X</span>
 
 
-                <br><br>
+                <br>
               </div>
             </div>
           </div>
@@ -48,6 +51,12 @@
             
         </div>
       </div>
+    </div>
+
+
+        
+        </div>
+
     <br>
     <br>
     </div>
@@ -58,7 +67,7 @@ import axios from 'axios';
 import RecipeFavorites from "./RecipeFavorites.vue";
 
 export default {
-    name: "RecipePreview",
+    name: "HomeRecipePreview",
 
     components:
     {
@@ -141,14 +150,11 @@ export default {
     mounted()
     {
 
-},
+    },
   methods:{
       showFullRecipe: function()
       {
-          if (this.ingredients.constructor === Array)
-          {
-            this.ingredients = this.ingredients.join(", ");
-          }
+
 
           let rec = {
             image: this.image,
@@ -166,21 +172,17 @@ export default {
             servings: this.servings
           };
 
+
           if (window.$cookies.isKey("userid"))
           {
             let uid = window.$cookies.get("userid");
 
             const res = axios.post('http://localhost:3000/user/addViewedRecipe', {recipeID: this.recipeID, user_id: uid}).then(response => {
-
             }).
             catch(error => {
               alert(error);
             })
           }
-
-
-
-          
           this.$root.$router.push({name: "FullRecipe", params: {recipe: rec}});
 
       },
