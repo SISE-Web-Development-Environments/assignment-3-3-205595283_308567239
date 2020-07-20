@@ -145,6 +145,8 @@ export default {
   methods:{
       showFullRecipe: function()
       {
+          this.isWatchedBefore = "V";
+
           if (this.ingredients.constructor === Array)
           {
             this.ingredients = this.ingredients.join(", ");

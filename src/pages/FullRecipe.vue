@@ -157,6 +157,15 @@ export default {
           asyncLocalStorage.getItem("searchResults").then(res => {
               
               let results = JSON.parse(res);
+
+              for (var i in results)
+              {
+                if (results[i].recipeID + '' === this.recipeID + '')
+                {
+                  results[i].isWatchedBefore = "V";
+                }
+              }
+
               this.$root.$router.push({name: "Results", params: {resultRecipes: results}});
         });
         }
