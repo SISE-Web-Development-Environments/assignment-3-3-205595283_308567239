@@ -78,18 +78,6 @@ paths:
         '403':
           description: Passwords are not the same
   
-  /about:
-    get:
-      summary: About the authors
-      description: General information if the authors
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: string
-
           
   /recipes/search:
     post:

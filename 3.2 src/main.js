@@ -105,11 +105,6 @@ app.post("/register", async function(req, res) {
 
 });
 
-app.get("/about", function(req, res) {
-  var about = "About\n\nWritten by: Liat Cohen & Adir Biran\nISE 2020";
-  res.status(200).send(about);
-});
-
 
 
 app.get("*", function(req, res) {
